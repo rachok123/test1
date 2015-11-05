@@ -41,7 +41,7 @@ end
 
 bash 'mysql_secure_installation' do
   code <<-EOH
-    mysql -uroot  touch /root/.mysql_secure_installation_complete
+    mysql -uroot<<EOF  &&  touch /root/.mysql_secure_installation_complete
 -- remove anonymous users
 DELETE FROM mysql.user WHERE User='';
 -- create user zabbix
@@ -55,13 +55,14 @@ DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
 -- Reload privilege tables now
 FLUSH PRIVILEGES;
 -- Create Database
-CREATE DATABASE zabbix
+CREATE DATABASE zabbix;
 EOF
   EOH
   only_if do
     !File.exists?('/root/.mysql_secure_installation_complete')
   end
 end
+
 bash 'mysql_zabbix_installation' do
   code <<-EOH
     cd /usr/share/doc/zabbix-server-mysql-2.4.6//create
