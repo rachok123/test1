@@ -5,7 +5,7 @@
   end
 end
 execute 'gnutls downgrade' do
-  code <<-EOH
+  command <<-EOH
   yum downgrade ftp://bo.mirror.garr.it/pub/1/slc/centos/7.0.1406/updates/x86_64/Packages/gnutls-3.1.18-10.el7_0.x86_64.rpm
   echo "exclude=gnutls*" >> /etc/yum.conf
   EOH
@@ -15,7 +15,7 @@ end
 
 
 execute 'zabbix_repo_configure' do
-  code <<-EOH
+  command <<-EOH
     rpm -i  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
   EOH
   action :run
