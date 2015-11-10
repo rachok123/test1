@@ -83,8 +83,8 @@ cookbook_file "/etc/httpd/conf.d/zabbix.conf" do
 end
 
 
-#{%w{mariadb zabbix-server httpd}.each do |zabbix_service|
-#  service "#{zabbix_service}" do
-#  action :restart
-#  end
-#end}"
+%w{mariadb zabbix-server httpd}.each do |zabbix_service|
+  service "#{zabbix_service}" do
+  action :restart
+  end
+end
