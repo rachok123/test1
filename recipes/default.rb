@@ -6,7 +6,7 @@
 end
 execute 'gnutls downgrade' do
   command <<-EOH
-  yum downgrade ftp://bo.mirror.garr.it/pub/1/slc/centos/7.0.1406/updates/x86_64/Packages/gnutls-3.1.18-10.el7_0.x86_64.rpm
+  rpm -Uvh --force ftp://bo.mirror.garr.it/pub/1/slc/centos/7.0.1406/updates/x86_64/Packages/gnutls-3.1.18-10.el7_0.x86_64.rpm
   echo "exclude=gnutls*" >> /etc/yum.conf
   touch /root/.gnutls_downgrade
   EOH
