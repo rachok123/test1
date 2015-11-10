@@ -448,7 +448,7 @@ DBPort=3306
 #
 # Mandatory: no
 # Default:
-# ExternalScripts=${datadir}/zabbix/externalscripts
+ExternalScripts=<%=node['zabbix']['external_script_path'] %>
 
 ### Option: FpingLocation
 #	Location of fping.
