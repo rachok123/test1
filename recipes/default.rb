@@ -1,5 +1,5 @@
 ##Prepeare
-%w{ntp mc  vim wget curl net-tools}.each do |packages|
+%w{epel-release ntp mc  vim wget curl net-tools}.each do |packages|
   package packages do
     action :install
   end
@@ -8,8 +8,12 @@ execute 'gnutls downgrade' do
   command <<-EOH
   yum downgrade ftp://bo.mirror.garr.it/pub/1/slc/centos/7.0.1406/updates/x86_64/Packages/gnutls-3.1.18-10.el7_0.x86_64.rpm
   echo "exclude=gnutls*" >> /etc/yum.conf
+  touch /root/.gnutls_downgrade
   EOH
   action :run
+  only_if do
+    !File.exists?('/root/.gnutls_downgrade')
+  end
 end
 
 
@@ -57,6 +61,7 @@ end
 
 template '/tmp/zabix-import.sh' do
   source 'zabbix-import.sh.erb'
+  mode '0755'
   notifies :run, 'execute[zabbix-import]', :immediately
   only_if do
     !File.exists?(' /root/.mysql_import_complete')
