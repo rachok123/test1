@@ -33,10 +33,8 @@ case node["platform"]
       action :create
     end
 
-    windows_package 'Zabbix agentd' do
-      source 'c:/zabbix/bin/win64/zabbix_agentd.exe'
-      options '--config c:/zabbix/conf/zabbix_agentd.win.conf  --install'
-      action :run
+    execute 'Zabbix agentd' do
+      command 'c:/zabbix/bin/win64/zabbix_agentd.exe --config c:/zabbix/conf/zabbix_agentd.win.conf  --install'
     end
 
     execute 'Zabbix add rules port in 10050' do
