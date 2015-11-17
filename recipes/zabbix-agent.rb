@@ -35,16 +35,22 @@ case node["platform"]
 
     execute 'Zabbix agentd' do
       command 'c:/zabbix/bin/win64/zabbix_agentd.exe --config c:/zabbix/conf/zabbix_agentd.win.conf  --install'
+      not_if  {::File.exists?('c:/zabbix/bin/win64/zabbix_instaled')}
+    end
+
+    template 'c:/zabbix/bin/win64/zabbix_instaledf' do
+      source  'zabbix-agent.conf.erb'
+      action :create
     end
 
     execute 'Zabbix add rules port in 10050' do
       timeout 5
-      command "netsh advfirewall firewall add rule name='Zabbix agent port 10050' dir=in action=allow program='C:\Zabbix\bin\win64\zabbix_agentd.exe' protocol=TCP localport=10050 enable=yes"
+      command "netsh advfirewall firewall add rule name='Zabbix agent port 10050' dir=in action=allow program='C:\zabbix\bin\win64\zabbix_agentd.exe' protocol=TCP localport=10050 enable=yes"
     end
 
     execute 'Zabbix add rules port out 10050' do
       timeout 5
-      command "netsh advfirewall firewall add rule name='Zabbix agent port 10050' dir=out action=allow program='C:\Zabbix\bin\win64\zabbix_agentd.exe' protocol=TCP localport=10050 enable=yes"
+      command "netsh advfirewall firewall add rule name='Zabbix agent port 10050' dir=out action=allow program='C:\zabbix\bin\win64\zabbix_agentd.exe' protocol=TCP localport=10050 enable=yes"
     end
 
     service "Zabbix Agent" do
