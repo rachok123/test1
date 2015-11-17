@@ -1,9 +1,9 @@
 name             'zabbix'
-maintainer       'YOUR_COMPANY_NAME'
-maintainer_email 'YOUR_EMAIL'
+maintainer       'rachok inc'
+maintainer_email 'rachok123@gmail.com'
 license          'All rights reserved'
-description      'Installs/Configures mysql56'
+description      'Installs/Configures Zabbix2.4'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.0'
+version          '0.3.0'
 depends          'yum'
 depends          'windows'

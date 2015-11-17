@@ -28,16 +28,15 @@ case node["platform"]
       not_if {::File.exists?('c:/zabbix/bin/win64/zabbix_agentd.exe')}
     end
 
-    template 'c:/zabbix/bin/win64/zabbix_agentd.exe' do
+    template 'c:/zabbix/conf/zabbix_agentd.win.conf' do
       source  'zabbix-agent.conf.erb'
-      action :create_if_missing
-      inherits true
+      action :create
     end
 
     windows_package 'Zabbix agentd' do
       source 'c:/zabbix/bin/win64/zabbix_agentd.exe'
       options '--config c:/zabbix/conf/zabbix_agentd.win.conf  --install'
-      action :install
+      action :run
     end
 
     execute 'Zabbix add rules port in 10050' do

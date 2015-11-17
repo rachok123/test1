@@ -38,28 +38,20 @@ Usage
 -----
 #### zabbbix::default
 TODO: Write usage instructions for each cookbook.
+zabbix:: default to install zabbix server and zabbix::
 
 e.g.
-Just include `mysql56` in your node's `run_list`:
+Just include `zabbix` in your node's `run_list` if you want up : 
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[mysql56]"
+    "recipe[zabbix]"
   ]
 }
 ```
-bash 'mysql_install_db' do
-  code <<-EOH
-    mysql_install_db
-    touch /root/.mysql_install_db_complete
-  EOH
-  only_if do
-    !File.exists?('/root/.mysql_install_db_complete')
-  end
-end
-Contributing
+
 ------------
 TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
 
