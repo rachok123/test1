@@ -8,7 +8,7 @@
 # Default:
 # PidFile=/tmp/zabbix_agentd.pid
 
-<%= if node["platform"] = 'windows' then "" else  "PidFile=/var/run/zabbix/zabbix_agentd.pid" end %>
+<%= if node.default["platform"] = 'windows' then "" else  "PidFile=/var/run/zabbix/zabbix_agentd.pid" end %>
 
 ### Option: LogFile
 #       Name of log file.
@@ -18,7 +18,7 @@
 # Default:
 # LogFile=
 
-<%= if node["platform"] = 'windows' then "" else "LogFile=/var/log/zabbix/zabbix_agentd.log" end %>
+<%= if node.default["platform"] = 'windows' then "" else "LogFile=/var/log/zabbix/zabbix_agentd.log" end %>
 
 ### Option: LogFileSize
 #       Maximum size of log file in MB.
@@ -250,7 +250,7 @@ Hostname= <%=node[:fqdn] %>
 # Default:
 # Include=
 
-<%= if node["platform"] = node['windows'] then "" else "Include=/etc/zabbix/zabbix_agentd.d/" end %>
+<%= if node.default["platform"] = node['windows'] then "" else "Include=/etc/zabbix/zabbix_agentd.d/" end %>
 
 # Include=/usr/local/etc/zabbix_agentd.userparams.conf
 # Include=/usr/local/etc/zabbix_agentd.conf.d/
