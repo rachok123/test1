@@ -1,29 +1,51 @@
 
 case node["platform"]
   when "centos"
-    execute 'zabbix_repo_configure' do
-      command <<-EOH
-        rpm -i  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
-      EOH
-      action :run
-      only_if do
-        !File.exists?('/etc/yum.repos.d/zabbix.repo')
-      end
-    end
-    package zabbix-agent  do
-      action :install
-    end
+    case node["platform_version"]
+        when "7.*"
+          execute 'zabbix_repo_configure' do
+            command <<-EOH
+              rpm -i  http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
+            EOH
+            action :run
+            only_if do
+              !File.exists?('/etc/yum.repos.d/zabbix.repo')
+            end
+          end
+          package zabbix-agent  do
+            action :install
+          end
 
-    template '/etc/zabbix/zabbix-agent.conf' do
-      source 'zabbix-agent.conf.erb'
-      owner "root"
-      mode "0754"
-      notifies :restart, "service[zabbix-agent]", :delayed
+          template '/etc/zabbix/zabbix-agent.conf' do
+            source 'zabbix-agent.conf.erb'
+            owner "root"
+            mode "0754"
+            notifies :restart, "service[zabbix-agent]", :delayed
+          end
+        when "6.*"
+          execute 'install_rpmrepo' do
+            code <<-EOH
+              rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm
+              EOH
+            not_if {File.exist?('/etc/yum.repos.d/zabbix.repo')}
+          end
+
+          yum_package 'zabbix-agent >= 2.4' do
+            action :install
+          end
+
+          template '/etc/zabbix/zabbix_agentd.conf' do
+            source 'zabbix_agent.conf.erb'
+          end
+
+          service 'zabbix-agent' do
+            action [:enable, :start]
+          end
     end
   when "windows"
 
     windows_zipfile 'c:/zabbix' do
-      source 'http://www.zabbix.com/downloads/2.4.1/zabbix_agents_2.4.1.win.zip'
+      source node['zabbix']['win_agent_url']
       action :unzip
       not_if {::File.exists?('c:/zabbix/bin/win64/zabbix_agentd.exe')}
     end
